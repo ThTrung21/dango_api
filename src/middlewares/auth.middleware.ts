@@ -36,3 +36,17 @@ export const AuthMiddleware = async (req: RequestWithUser, res: Response, next: 
     next(new HttpException(401, 'Wrong authentication token'));
   }
 };
+export const AdminCheckMiddleware = async (req: RequestWithUser, res: Response, next: NextFunction) => {
+  const { user } = req;
+  if (user.getDataValue('role') == Role.ADMIN) {
+    next();
+  } else next(new HttpException(403, "Cannot access role admin's resource"));
+};
+
+export const StaffCheckMiddleware = async (req: RequestWithUser, res: Response, next: NextFunction) => {
+  const { user } = req;
+  const acceptedRoles = [Role.ADMIN, Role.DELIVERER];
+  if (acceptedRoles.includes(user.getDataValue('role'))) {
+    next();
+  } else next(new HttpException(403, "Cannot access role delieverer's resource"));
+};
