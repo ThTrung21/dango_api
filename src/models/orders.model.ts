@@ -6,9 +6,9 @@ export class OrderModel extends Model<Order, OrderCreationAttributes> implements
   public id: number;
   public status: OrderStatus;
   public userId: number;
-  public receiptAddress: string;
-  public receiptName: string;
-  public receiptPhone: string;
+  public orderAddress: string;
+  public orderName: string;
+  public orderPhone: string;
 
   public createdAt!: Date;
   public updatedAt!: Date;
@@ -32,15 +32,15 @@ const initModel = (sequelize: Sequelize): typeof OrderModel => {
         allowNull: false,
         type: DataTypes.INTEGER,
       },
-      receiptAddress: {
+      orderAddress: {
         allowNull: false,
         type: DataTypes.STRING(225),
       },
-      receiptName: {
+      orderName: {
         allowNull: false,
         type: DataTypes.STRING(45),
       },
-      receiptPhone: {
+      orderPhone: {
         allowNull: false,
         type: DataTypes.STRING(45),
       },

@@ -9,21 +9,23 @@
 // ];
 
 import { DataTypes, Model, Optional, Sequelize } from 'sequelize';
-import { User } from '@interfaces/users.interface';
-import { Role } from '@/interfaces/auth.interface';
+import { User, Role } from '@interfaces/users.interface';
+//import { Role } from '@/interfaces/auth.interface';
 
 export type UserCreationAttributes = Optional<User, 'id'>;
 
 export class UserModel extends Model<User, UserCreationAttributes> implements User {
   public role: Role;
-  public fullname: string;
-  public phone: string;
-  public dob: Date;
 
-  public id: number;
-  public email: string;
+  public id?: number;
   public password: string;
-  public avatar: string;
+  public fullname: string;
+  public dob: Date;
+  public address: string;
+  public phone: string;
+  public orderHistory: string[];
+  public email: string;
+  public avatar?: string;
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -37,7 +39,7 @@ const initModel = (sequelize: Sequelize): typeof UserModel => {
         type: DataTypes.INTEGER,
       },
       email: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.STRING(45),
       },
       password: {
@@ -45,20 +47,20 @@ const initModel = (sequelize: Sequelize): typeof UserModel => {
         type: DataTypes.STRING(255),
       },
       fullname: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.STRING(45),
       },
       phone: {
-        allowNull: true,
+        allowNull: false,
         type: DataTypes.STRING(45),
       },
       dob: {
         allowNull: true,
         type: DataTypes.DATE,
       },
-      isActive: {
-        defaultValue: true,
-        type: DataTypes.BOOLEAN,
+      address: {
+        allowNull: true,
+        type: DataTypes.STRING,
       },
       role: {
         defaultValue: Role.CUSTOMER,
@@ -67,6 +69,10 @@ const initModel = (sequelize: Sequelize): typeof UserModel => {
       avatar: {
         allowNull: true,
         type: DataTypes.STRING(500),
+      },
+      orderHistory: {
+        allowNull: true,
+        type: DataTypes.JSON,
       },
     },
     {

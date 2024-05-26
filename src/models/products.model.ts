@@ -5,14 +5,16 @@ export type ProductCreationAttributes = Optional<Product, 'id'>;
 
 export class ProductModel extends Model<Product, ProductCreationAttributes> implements Product {
   public id: number;
-  public name: string;
-  public desc: string;
-  public price: number;
-  public brandId: number;
-  public importPrice: number;
   public categoryId: number;
-  public inventory: number;
+  public brandId: number;
+
+  public name: string;
+  public stock: number;
+  public price: number;
+  public importPrice: number;
   public sold: number;
+
+  public description: string;
   public images: string[];
 
   public readonly createdAt!: Date;
@@ -28,22 +30,6 @@ const initModel = (sequelize: Sequelize): typeof ProductModel => {
         primaryKey: true,
         type: DataTypes.INTEGER,
       },
-      name: {
-        allowNull: false,
-        type: DataTypes.STRING(45),
-      },
-      desc: {
-        allowNull: false,
-        type: DataTypes.STRING(225),
-      },
-      price: {
-        allowNull: false,
-        type: DataTypes.DECIMAL(10, 2),
-      },
-      importPrice: {
-        allowNull: false,
-        type: DataTypes.DECIMAL(10, 2),
-      },
       brandId: {
         allowNull: true,
         type: DataTypes.INTEGER,
@@ -52,17 +38,36 @@ const initModel = (sequelize: Sequelize): typeof ProductModel => {
         allowNull: true,
         type: DataTypes.INTEGER,
       },
-      inventory: {
+
+      name: {
+        allowNull: false,
+        type: DataTypes.STRING(45),
+      },
+      stock: {
         allowNull: false,
         type: DataTypes.INTEGER,
+      },
+
+      price: {
+        allowNull: false,
+        type: DataTypes.DECIMAL(10, 2),
+      },
+      importPrice: {
+        allowNull: false,
+        type: DataTypes.DECIMAL(10, 2),
       },
       sold: {
         defaultValue: 0,
         type: DataTypes.INTEGER,
       },
+
       images: {
         allowNull: true,
         type: DataTypes.JSON,
+      },
+      description: {
+        allowNull: false,
+        type: DataTypes.STRING(225),
       },
     },
     {

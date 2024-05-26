@@ -7,30 +7,33 @@ export class CreateProductDto {
 
   @IsString()
   @IsNotEmpty()
-  public desc: string;
+  public description: string;
 
   @IsNumber()
+  @IsNotEmpty()
   public price: number;
 
   @IsNumber()
+  @IsNotEmpty()
   public importPrice: number;
 
   @IsString()
   @IsNotEmpty()
   public brandName: string;
 
-  @IsOptional()
+  @IsNotEmpty()
   @IsNumber()
   public categoryId?: number;
 
   @IsNumber()
+  @IsOptional()
   public sold: number;
 
   @IsString({ each: true })
   public images: string[];
 
   @IsNumber()
-  public inventory: number;
+  public stock: number;
 }
 
 export class UpdateProductDto {
@@ -42,7 +45,7 @@ export class UpdateProductDto {
   @IsString()
   @IsOptional()
   @IsNotEmpty()
-  public desc: string;
+  public description: string;
 
   @IsNumber()
   @IsOptional()
@@ -59,10 +62,6 @@ export class UpdateProductDto {
 
   @IsNumber()
   @IsOptional()
-  public quantity: number;
-
-  @IsNumber()
-  @IsOptional()
   public sold: number;
 
   @IsArray()
@@ -71,5 +70,5 @@ export class UpdateProductDto {
   public images: string[];
 
   @IsNumber()
-  public inventory: number;
+  public stock: number;
 }

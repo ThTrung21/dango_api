@@ -1,11 +1,22 @@
+export enum Role {
+  ADMIN = 'ADMIN',
+  CUSTOMER = 'CUSTOMER',
+  STAFF = 'STAFF',
+}
+
 export interface User {
   id?: number;
-  email: string;
   password: string;
+
   fullname: string;
-  avatar?: string;
-  phone: string;
   dob: Date;
+  address: string;
+  phone: string;
+  orderHistory: string[];
+  email: string;
+
+  avatar?: string;
+
   role: Role;
 }
-import { Role } from './auth.interface';
+//import { Role } from './auth.interface';

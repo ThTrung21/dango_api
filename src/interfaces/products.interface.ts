@@ -1,12 +1,15 @@
 export interface Product {
   id: number;
+  categoryId: number;
+  brandId: number;
+
   name: string;
-  desc: string;
+  stock: number;
+
   price: number;
   importPrice: number;
-  brandId: number;
-  categoryId: number;
-  inventory: number;
   sold: number;
+
+  description: string;
   images: string[];
 }

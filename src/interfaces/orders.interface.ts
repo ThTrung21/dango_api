@@ -1,16 +1,17 @@
 export enum OrderStatus {
   PENDING = 'PENDING',
+  Processing = 'PROCESSING',
   CANCELLED = 'CANCELLED',
   DELIVERED = 'DELIVERED',
 }
 
 export interface Order {
-  id?: number;
+  id: number;
   status: OrderStatus;
   userId: number;
-  receiptAddress: string;
-  receiptName: string;
-  receiptPhone: string;
+  orderAddress: string;
+  orderName: string;
+  orderPhone: string;
 
   createdAt?: Date;
   updatedAt?: Date;

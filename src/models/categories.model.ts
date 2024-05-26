@@ -6,7 +6,6 @@ export type CategoriesCreationAttributes = Optional<Categories, 'id'>;
 export class CategoriesModel extends Model<Categories, CategoriesCreationAttributes> implements Categories {
   public id: number;
   public name: string;
-  public desc: string;
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -24,10 +23,6 @@ const initModel = (sequelize: Sequelize): typeof CategoriesModel => {
       name: {
         allowNull: false,
         unique: true,
-        type: DataTypes.STRING(225),
-      },
-      desc: {
-        allowNull: false,
         type: DataTypes.STRING(225),
       },
     },

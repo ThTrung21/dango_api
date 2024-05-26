@@ -4,7 +4,7 @@ import { UserRoute } from '@routes/users.route';
 import { ValidateEnv } from '@utils/validateEnv';
 
 ValidateEnv();
-
-const app = new App([new UserRoute(), new AuthRoute()]);
+//[nodemon] app crashed - waiting for file changes before starting...
+const app = new App([new AuthRoute()]);
 
 app.listen();

@@ -1,8 +1,10 @@
-import { Role } from '@/interfaces/auth.interface';
+//import { Role } from '@/interfaces/auth.interface';
+import { Role } from '@/interfaces/users.interface';
 import { IsString, IsEmail, IsNotEmpty, MinLength, MaxLength, IsDate, IsOptional, IsBoolean, IsDateString, IsEnum } from 'class-validator';
 
 export class CreateUserDto {
   @IsEmail()
+  @IsOptional()
   public email: string;
 
   @IsString()
@@ -22,12 +24,16 @@ export class CreateUserDto {
   public phone: string;
 
   @IsDateString()
-  @IsOptional()
+  @IsNotEmpty()
   public dob: Date;
 
   @IsOptional()
   @IsEnum(Role)
   public role?: Role;
+
+  @IsString()
+  @IsOptional()
+  public address: string;
 }
 
 export class UpdatePasswordDto {
@@ -60,4 +66,8 @@ export class UpdateUserDto {
   @IsString()
   @IsOptional()
   public avatar?: string;
+
+  @IsString()
+  @IsOptional()
+  public address: string;
 }

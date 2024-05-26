@@ -1,8 +1,8 @@
 import { NextFunction, Response } from 'express';
 import { verify } from 'jsonwebtoken';
 import { SECRET_KEY } from '@config';
-import { HttpException } from '@exceptions/httpException';
-import { DataStoredInToken, RequestWithUser } from '@interfaces/auth.interface';
+import { HttpException } from '@exceptions/HttpException';
+import { DataStoredInToken, RequestWithUser, Role, TokenType } from '@interfaces/auth.interface';
 import { UserModel } from '@models/users.model';
 
 const getAuthorization = req => {
@@ -45,7 +45,7 @@ export const AdminCheckMiddleware = async (req: RequestWithUser, res: Response, 
 
 export const StaffCheckMiddleware = async (req: RequestWithUser, res: Response, next: NextFunction) => {
   const { user } = req;
-  const acceptedRoles = [Role.ADMIN, Role.DELIVERER];
+  const acceptedRoles = [Role.ADMIN, Role.STAFF];
   if (acceptedRoles.includes(user.getDataValue('role'))) {
     next();
   } else next(new HttpException(403, "Cannot access role delieverer's resource"));

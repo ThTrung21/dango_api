@@ -3,7 +3,8 @@ export interface OrderItem {
   quantity: number;
   orderId: number;
   productId: number;
-  sumPrice: number;
+  totalPrice: number;
+
   createdAt?: Date;
   updatedAt?: Date;
 }

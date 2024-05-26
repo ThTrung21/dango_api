@@ -36,11 +36,11 @@ export class UpdateOrderDto {
 
   @IsString()
   @IsOptional()
-  public receiptName?: string;
+  public orderName?: string;
 
   @IsString()
   @IsOptional()
-  public receiptPhone?: string;
+  public orderPhone?: string;
 
   @IsEnum(OrderStatus)
   @IsOptional()
