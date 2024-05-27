@@ -12,13 +12,13 @@ export class ProductItem {
 
 export class CreateOrderDto {
   @IsString()
-  public receiptAddress?: string;
+  public orderAddress?: string;
 
   @IsString()
-  public receiptName?: string;
+  public orderName?: string;
 
   @IsString()
-  public receiptPhone?: string;
+  public orderPhone?: string;
 
   @IsEnum(OrderStatus)
   @IsOptional()
@@ -32,7 +32,7 @@ export class CreateOrderDto {
 export class UpdateOrderDto {
   @IsString()
   @IsOptional()
-  public receiptAddress?: string;
+  public orderAddress?: string;
 
   @IsString()
   @IsOptional()

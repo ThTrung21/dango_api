@@ -9,9 +9,7 @@ export class BrandRoute implements Routes {
   public brand = new BrandController();
 
   constructor() {
-    logger.info('Initializing BrandRoute...');
     this.initializeRoutes();
-    logger.info('BrandRoute initialized successfully');
   }
 
   private initializeRoutes() {

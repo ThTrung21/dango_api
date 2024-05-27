@@ -12,14 +12,14 @@ import { BrandRoute } from './routes/brands.route';
 ValidateEnv();
 //[nodemon] app crashed - waiting for file changes before starting...
 const app = new App([
-  // new AuthRoute(),
-  // new UserRoute(),
-  // new ProductRoute(),
-  // new OrderRoute(),
-  // new CategoryRoute(),
-  // new OrderItemRoute(),
-  // new GeneralRoute(),
-  // new BrandRoute(),
+  new AuthRoute(),
+  new UserRoute(),
+  new ProductRoute(),
+  new OrderRoute(),
+  new CategoryRoute(),
+  new OrderItemRoute(),
+  new GeneralRoute(),
+  new BrandRoute(),
 ]);
 
 app.listen();

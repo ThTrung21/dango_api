@@ -5,7 +5,7 @@ import { CreateUserDto, UpdatePasswordDto, UpdateUserDto } from '@dtos/users.dto
 import { HttpException } from '@/exceptions/HttpException';
 import { User } from '@interfaces/users.interface';
 import { Role } from '@/interfaces/auth.interface';
-//import { AVATARS } from '@/database/seeders/constant-urls';
+import { AVATARS } from '@/database/seeders/constant-urls';
 import { faker } from '@faker-js/faker';
 
 @Service()
@@ -27,7 +27,7 @@ export class UserService {
           ],
           [
             `(
-              SELECT SUM(oi.sum_price)
+              SELECT SUM(oi.total_price)
               FROM orders as o
               left join order_items oi 
               on oi.order_id = o.id 
@@ -57,7 +57,7 @@ export class UserService {
     const createUserData: User = await DB.User.create({
       ...userData,
       password: hashedPassword,
-      //avatar: AVATARS[faker.number.int({ min: 0, max: 2 })],
+      avatar: AVATARS[faker.number.int({ min: 0, max: 1 })],
     });
     return createUserData;
   }
