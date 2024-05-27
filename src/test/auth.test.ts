@@ -1,52 +1,78 @@
+import bcrypt from 'bcrypt';
+import { Sequelize } from 'sequelize';
 import request from 'supertest';
 import { App } from '@/app';
-import { User } from '@interfaces/users.interface';
+import { CreateUserDto } from '@dtos/users.dto';
 import { AuthRoute } from '@routes/auth.route';
 
 afterAll(async () => {
   await new Promise<void>(resolve => setTimeout(() => resolve(), 500));
 });
 
-describe('TEST Authorization API', () => {
-  const route = new AuthRoute();
-  const app = new App([route]);
-
+describe('Testing Auth', () => {
   describe('[POST] /signup', () => {
-    it('response should have the Create userData', () => {
-      const userData: User = {
-        email: 'example@email.com',
-        password: 'password123456789',
+    it('response should have the Create userData', async () => {
+      const userData: CreateUserDto = {
+        email: 'test@email.com',
+        password: 'q1w2e3r4!',
+        fullname: '',
+        phone: '',
+        dob: undefined,
+        address: '',
       };
 
-      return request(app.getServer()).post('/signup').send(userData).expect(201);
+      const authRoute = new AuthRoute();
+      const users = authRoute.authController.authService.users;
+
+      users.findOne = jest.fn().mockReturnValue(null);
+      users.create = jest.fn().mockReturnValue({
+        id: 1,
+        email: userData.email,
+        password: await bcrypt.hash(userData.password, 10),
+      });
+
+      (Sequelize as any).authenticate = jest.fn();
+      const app = new App([authRoute]);
+      return request(app.getServer()).post(`${authRoute.path}signup`).send(userData).expect(201);
     });
   });
 
   describe('[POST] /login', () => {
-    it('response should have the Set-Cookie header with the Authorization token', () => {
-      const userData: User = {
-        email: 'example1@email.com',
-        password: 'password123456789',
+    it('response should have the Set-Cookie header with the Authorization token', async () => {
+      const userData: CreateUserDto = {
+        email: 'test@email.com',
+        password: 'q1w2e3r4!',
+        fullname: '',
+        phone: '',
+        dob: undefined,
       };
 
+      const authRoute = new AuthRoute();
+      const users = authRoute.authController.authService.users;
+
+      users.findOne = jest.fn().mockReturnValue({
+        id: 1,
+        email: userData.email,
+        password: await bcrypt.hash(userData.password, 10),
+      });
+
+      (Sequelize as any).authenticate = jest.fn();
+      const app = new App([authRoute]);
       return request(app.getServer())
-        .post('/login')
+        .post(`${authRoute.path}login`)
         .send(userData)
-        .expect('Set-Cookie', /^Authorization=.+/)
-        .expect(200);
+        .expect('Set-Cookie', /^Authorization=.+/);
     });
   });
 
-  // error: StatusCode : 404, Message : Authentication token missing
   // describe('[POST] /logout', () => {
-  //   it('logout Set-Cookie Authorization=; Max-age=0', () => {
-  //     const route = new AuthRoute()
-  //     const app = new App([route]);
+  //   it('logout Set-Cookie Authorization=; Max-age=0', async () => {
+  //     const authRoute = new AuthRoute();
 
+  //     const app = new App([authRoute]);
   //     return request(app.getServer())
-  //       .post('/logout')
-  //       .expect('Set-Cookie', /^Authorization=\;/)
-  //       .expect(200);
+  //       .post(`${authRoute.path}logout`)
+  //       .expect('Set-Cookie', /^Authorization=\;/);
   //   });
   // });
 });

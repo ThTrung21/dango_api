@@ -41,17 +41,16 @@ const sequelize = new Sequelize.Sequelize(DB_DATABASE, DB_USER, DB_PASS, {
   benchmark: true,
   attributeBehavior: 'unsafe-legacy',
 
-  dialectOptions: {
-    ssl: {
-      ca: readFileSync(join(__dirname, 'DigiCertGlobalRootCA.crt.pem')).toString(),
-    },
-  },
+  // dialectOptions: {
+  //   ssl: {
+  //     ca: readFileSync(join(__dirname, 'DigiCertGlobalRootCA.crt.pem')).toString(),
+  //   },
+  // },
 });
 sequelize.authenticate();
 
 const initAllModels = (sequelize: Sequelize.Sequelize) => {
   const OrderItem = OrderItemModel(sequelize);
-  //const Reviews = ReviewsModel(sequelize);
   const Product = ProductModel(sequelize);
   const Categories = CategoriesModel(sequelize);
   const Order = OrderModel(sequelize);
