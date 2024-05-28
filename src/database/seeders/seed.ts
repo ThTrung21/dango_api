@@ -153,8 +153,8 @@ class Seeder {
           brandName: brands[faker.number.int({ min: 0, max: 6 })],
           images: [...imgsSet],
           categoryId: category,
-          stock: faker.number.int({ min: 20, max: 100 }),
-          sold: 0,
+          stock: faker.number.int({ min: 21, max: 300 }),
+          sold: faker.number.int({ min: 1, max: 20 }),
         };
 
         await this.productService.createProduct(newProducts);

@@ -24,7 +24,7 @@ export class CreateUserDto {
   public phone: string;
 
   @IsDateString()
-  @IsNotEmpty()
+  @IsOptional()
   public dob: Date;
 
   @IsOptional()
