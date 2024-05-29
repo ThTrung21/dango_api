@@ -16,6 +16,15 @@ export class ProductController {
       next(error);
     }
   };
+  public getTenProducts = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const findTenProductsData: Product[] = await this.product.findFirstTenProducts();
+
+      res.status(200).json({ data: findTenProductsData, message: 'findAll' });
+    } catch (error) {
+      next(error);
+    }
+  };
 
   public getProductById = async (req: Request, res: Response, next: NextFunction) => {
     try {

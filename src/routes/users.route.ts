@@ -21,16 +21,17 @@ export class UserRoute implements Routes {
     this.router.patch(`${this.path}/change-password`, AuthMiddleware, ValidationMiddleware(UpdatePasswordDto, true), this.user.updatePassword);
     // admin
     this.router.get(`${this.path}`, AuthMiddleware, AdminCheckMiddleware, this.user.getUsers);
+    this.router.get(`${this.path}/s`, AuthMiddleware, AdminCheckMiddleware, this.user.getStaff);
     this.router.get(`${this.path}/:id(\\d+)`, AuthMiddleware, AdminCheckMiddleware, this.user.getUserById);
     this.router.post(`${this.path}`, AuthMiddleware, AdminCheckMiddleware, ValidationMiddleware(CreateUserDto), this.user.createUser);
     this.router.put(`${this.path}/:id(\\d+)`, AuthMiddleware, AdminCheckMiddleware, ValidationMiddleware(UpdateUserDto, true), this.user.updateUser);
     this.router.delete(`${this.path}/:id(\\d+)`, AuthMiddleware, AdminCheckMiddleware, this.user.deleteUser);
-    this.router.patch(
-      `${this.path}/change-status/:id/:isActive`,
-      AuthMiddleware,
-      AdminCheckMiddleware,
-      ValidationMiddleware(UpdatePasswordDto, true),
-      //this.user.updateUserStatus,
-    );
+    // this.router.patch(
+    //   `${this.path}/change-status/:id/:isActive`,
+    //   AuthMiddleware,
+    //   AdminCheckMiddleware,
+    //   ValidationMiddleware(UpdatePasswordDto, true),
+    //   //this.user.updateUserStatus,
+    // );
   }
 }

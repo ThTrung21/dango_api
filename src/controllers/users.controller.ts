@@ -24,7 +24,15 @@ export class UserController {
       next(error);
     }
   };
+  public getStaff = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const findAllStaffData: User[] = await this.user.findAllStaff();
 
+      res.status(200).json({ data: findAllStaffData, message: 'findAll' });
+    } catch (error) {
+      next(error);
+    }
+  };
   public getUserById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const userId = Number(req.params.id);

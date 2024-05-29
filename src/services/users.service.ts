@@ -41,6 +41,15 @@ export class UserService {
     });
     return allUser;
   }
+  public async findAllStaff(): Promise<User[]> {
+    const allStaff: User[] = await DB.User.findAll({
+      where: { role: Role.STAFF },
+      attributes: {
+        exclude: ['password'],
+      },
+    });
+    return allStaff;
+  }
 
   public async findUserById(userId: number): Promise<User> {
     const findUser: User = await DB.User.findByPk(userId);

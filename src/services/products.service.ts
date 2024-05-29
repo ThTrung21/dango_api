@@ -22,6 +22,15 @@ export class ProductService {
 
     return findProduct;
   }
+
+  //get 10 products:
+  public async findFirstTenProducts(): Promise<Product[]> {
+    const products: Product[] = await DB.Product.findAll({
+      limit: 10,
+      order: [['id', 'ASC']], // Assuming you want to get the first 10 products based on their ID
+    });
+    return products;
+  }
   //add products
   public async createProduct(dto: CreateProductDto): Promise<Product> {
     const findProduct = await DB.Product.findOne({ where: { name: dto.name } });
