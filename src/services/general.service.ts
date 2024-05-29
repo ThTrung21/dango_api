@@ -1,7 +1,7 @@
 import { DB } from '@/database';
 import { Role } from '@/interfaces/auth.interface';
 import moment from 'moment-timezone';
-import { Op } from 'sequelize';
+import { Op, WhereOptions } from 'sequelize';
 import { Service } from 'typedi';
 
 @Service()
@@ -28,8 +28,8 @@ export class GeneralService {
     const totalProfit = await OrderItem.findAll({
       attributes: [
         [Sequelize.fn('date', Sequelize.col('OrderItemModel.created_at')), 'Date'],
-        [Sequelize.literal(`sum(sum_price)`), 'revenue'],
-        [Sequelize.literal(`sum(sum_price) - sum(import_price*quantity)`), 'profit'],
+        [Sequelize.literal(`sum(total_price)`), 'revenue'],
+        [Sequelize.literal(`sum(total_price) - sum(import_price*quantity)`), 'profit'],
       ],
       include: {
         model: Product,
@@ -57,26 +57,56 @@ export class GeneralService {
     };
   }
 
+  // public async getRevenueByCategory() {
+  //   const { Sequelize, OrderItem } = DB;
+
+  //   const sevenDaysAgo = new Date();
+  //   sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+
+  //   const orderItems = await OrderItem.findAll({
+  //     attributes: [
+  //       [Sequelize.fn('SUM', Sequelize.col('total_price')), 'Revenue'],
+  //       [Sequelize.fn('date', Sequelize.col('OrderItemModel.created_at')), 'Date'],
+  //     ],
+  //     include: {
+  //       model: DB.Product,
+  //       attributes: ['category_id'],
+  //     },
+  //     where: Sequelize.where(Sequelize.col('OrderItemModel.created_at'), {
+  //       [Op.lt]: new Date(),
+  //       [Op.gt]: sevenDaysAgo,
+  //     }),
+  //     group: ['Date', 'category_id'],
+  //   });
+
+  //   return orderItems;
+  // }
   public async getRevenueByCategory() {
-    const { Sequelize, OrderItem } = DB;
+    const { Sequelize, OrderItem, Product } = DB;
 
     const sevenDaysAgo = new Date();
     sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
 
-    const orderItems = await OrderItem.findAll({
-      attributes: [
-        [Sequelize.fn('SUM', Sequelize.col('totalPrice')), 'Revenue'],
-        [Sequelize.fn('date', Sequelize.col('OrderItemModel.created_at')), 'Date'],
-      ],
-      include: {
-        model: DB.Product,
-        attributes: ['category_id'],
-      },
-      where: Sequelize.where(Sequelize.col('OrderItemModel.created_at'), {
+    const whereClause: WhereOptions = {
+      created_at: {
+        // Specify the table alias or name
         [Op.lt]: new Date(),
         [Op.gt]: sevenDaysAgo,
-      }),
-      group: ['Date', 'category_id'],
+      },
+    };
+
+    const orderItems = await OrderItem.findAll({
+      attributes: [
+        [Sequelize.fn('SUM', Sequelize.col('total_price')), 'Revenue'],
+        [Sequelize.fn('date', Sequelize.col('OrderItemModel.created_at')), 'Date'],
+        [Sequelize.col('ProductModel.category_id'), 'category_id'], // Include category_id in SELECT clause
+      ],
+      include: {
+        model: Product,
+        attributes: [], // Do not select ProductModel.id directly
+      },
+      where: whereClause,
+      group: ['Date', 'ProductModel.category_id'], // Group by Date and category_id
     });
 
     return orderItems;
@@ -93,7 +123,7 @@ export class GeneralService {
         include: [
           [
             DB.sequelize.literal(`
-            (SELECT SUM(totalPrice) 
+            (SELECT SUM(total_price) 
             FROM order_items 
             WHERE order_items.order_id = OrderModel.id)
           `),
