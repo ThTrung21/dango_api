@@ -31,6 +31,7 @@ export class ProductService {
     });
     return products;
   }
+
   //add products
   public async createProduct(dto: CreateProductDto): Promise<Product> {
     const findProduct = await DB.Product.findOne({ where: { name: dto.name } });

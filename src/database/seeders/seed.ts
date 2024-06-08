@@ -15,12 +15,16 @@ import { Role } from '@/interfaces/auth.interface';
 import { OrderStatus } from '@/interfaces/orders.interface';
 import moment from 'moment-timezone';
 import { PRODUCT_IMG } from './constant-urls';
+import { Dish } from '@/interfaces/dishes.interface';
+import { CreateDishDto } from '@/dtos/dishes.dto';
+import { DishService } from '@/services/dishes.service';
 
 interface SeedAmount {
   users: number;
   products: number;
   ordersPerUser: number;
   itemsPerOrder: number;
+  dishes: number;
 }
 function getRandomElement(arr: string[]): string {
   const randomIndex = Math.floor(Math.random() * arr.length);
@@ -32,6 +36,7 @@ class Seeder {
   private productService = new ProductService();
   private orderService = new OrderService();
   private categoryService = new CategoryService();
+  private dishService = new DishService();
   private orderModel = DB.Order;
   private orderItemMode = DB.OrderItem;
   constructor(amount: SeedAmount) {
@@ -243,11 +248,43 @@ class Seeder {
     );
     logger.info('Modify created date successfully!');
   }
+  private async SeedDish() {
+    try {
+      const { dishes } = this.seedingAmount;
+      for (let i = 0; i < dishes; i++) {
+        const imgs_src = PRODUCT_IMG;
+
+        const imgsSet = new Set<string>();
+        const productSet = new Set<number>();
+        while (imgsSet.size < 3) {
+          imgsSet.add(imgs_src[faker.number.int({ min: 0, max: imgs_src.length - 1 })]);
+        }
+        while (productSet.size < 3) {
+          productSet.add(faker.number.int({ min: 0, max: 30 }));
+        }
+
+        const newDishes: CreateDishDto = {
+          name: faker.commerce.product(),
+          description: faker.commerce.productDescription(),
+          productid: [...productSet],
+          images: [...imgsSet],
+        };
+
+        await this.dishService.createDish(newDishes);
+      }
+
+      logger.info('Product seeding successfully!');
+    } catch (error) {
+      logger.error('Product seeding error!');
+      throw error;
+    }
+  }
   public async seedAll() {
     await this.SeedUsers();
     await this.SeedCategories();
     await this.SeedProducts();
     await this.SeedOrders();
+    await this.SeedDish();
     await this.ModifyCreatedDate();
   }
 }
@@ -259,6 +296,7 @@ class Seeder {
       products: 32,
       ordersPerUser: 5,
       itemsPerOrder: 3,
+      dishes: 10,
     });
     await seeder.seedAll();
 

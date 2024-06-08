@@ -14,7 +14,7 @@ import { Routes } from '@interfaces/routes.interface';
 import { ErrorMiddleware } from '@middlewares/error.middleware';
 import { logger, stream } from '@utils/logger';
 import { DB } from '@/database';
-
+//
 export class App {
   public app: express.Application;
   public env: string;
