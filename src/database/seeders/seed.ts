@@ -253,29 +253,29 @@ class Seeder {
       const { dishes } = this.seedingAmount;
       for (let i = 0; i < dishes; i++) {
         const imgs_src = PRODUCT_IMG;
-
         const imgsSet = new Set<string>();
         const productSet = new Set<number>();
         while (imgsSet.size < 3) {
           imgsSet.add(imgs_src[faker.number.int({ min: 0, max: imgs_src.length - 1 })]);
         }
-        while (productSet.size < 3) {
-          productSet.add(faker.number.int({ min: 0, max: 30 }));
+        const productidArray: number[] = [];
+        while (productidArray.length < 3) {
+          const productId = faker.number.int({ min: 0, max: 30 });
+          if (!productidArray.includes(productId)) {
+            productidArray.push(productId);
+          }
         }
-
         const newDishes: CreateDishDto = {
           name: faker.commerce.product(),
           description: faker.commerce.productDescription(),
-          productid: [...productSet],
+          productid: productidArray,
           images: [...imgsSet],
         };
-
         await this.dishService.createDish(newDishes);
       }
-
-      logger.info('Product seeding successfully!');
+      logger.info('Dish seeding successfully!');
     } catch (error) {
-      logger.error('Product seeding error!');
+      logger.error('Dish seeding error!');
       throw error;
     }
   }

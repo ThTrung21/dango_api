@@ -9,7 +9,7 @@ import ProductModel from '@/models/products.model';
 import CategoriesModel from '@/models/categories.model';
 import BrandsModel from '@/models/brands.model';
 import OrderItemModel from '@/models/order-items.model';
-import  DishModel  from '@/models/dishes.model';
+import DishModel from '@/models/dishes.model';
 import { logger } from '@/utils/logger';
 import { readFileSync } from 'fs';
 import { join } from 'path';
@@ -56,7 +56,7 @@ const initAllModels = (sequelize: Sequelize.Sequelize) => {
   const Order = OrderModel(sequelize);
   const User = UserModel(sequelize);
   const Brands = BrandsModel(sequelize);
-  const Dish= DishModel(sequelize);
+  const Dish = DishModel(sequelize);
 
   // order_item and order
   Order.hasMany(OrderItem, { foreignKey: 'orderId' });
@@ -78,16 +78,14 @@ const initAllModels = (sequelize: Sequelize.Sequelize) => {
   User.hasMany(Order, { foreignKey: 'userId' });
   Order.belongsTo(User, { foreignKey: 'userId' });
 
-  Dish.hasMany(Product, { foreignKey: 'productId' });
-  Product.belongsTo(Dish, { foreignKey: 'productId' });
-
   return {
     OrderItem,
     Product,
     Categories,
     Order,
     User,
-    Brands,Dish,
+    Brands,
+    Dish,
   };
 };
 

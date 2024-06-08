@@ -9,6 +9,7 @@ import { CategoryRoute } from './routes/categories.route';
 import { OrderItemRoute } from './routes/order-items.route';
 import { GeneralRoute } from './routes/general.route';
 import { BrandRoute } from './routes/brands.route';
+import { DishRoute } from './routes/dishes.route';
 ValidateEnv();
 //[nodemon] app crashed - waiting for file changes before starting...
 const app = new App([
@@ -20,6 +21,7 @@ const app = new App([
   new OrderItemRoute(),
   new GeneralRoute(),
   new BrandRoute(),
+  new DishRoute(),
 ]);
 
 app.listen();

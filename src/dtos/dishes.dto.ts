@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsNumber, IsArray, IsOptional, isArray, ArrayMinSize } from 'class-validator';
+import { IsString, IsNotEmpty, IsNumber, IsArray, IsOptional, isArray, ArrayMinSize, IsInt, Min } from 'class-validator';
 
 export class CreateDishDto {
   @IsString()
@@ -14,7 +14,8 @@ export class CreateDishDto {
 
   @IsArray()
   @ArrayMinSize(1)
-  @IsNumber({}, { each: true })
+  @IsInt({ each: true })
+  @Min(0, { each: true })
   public productid: number[];
 }
 
@@ -36,6 +37,7 @@ export class UpdateDishDto {
 
   @IsArray()
   @ArrayMinSize(1)
-  @IsNumber({}, { each: true })
+  @IsInt({ each: true })
+  @Min(0, { each: true })
   public productid: number[];
 }

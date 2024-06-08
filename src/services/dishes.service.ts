@@ -26,8 +26,8 @@ export class DishService {
 
   //add
   public async createDish(dto: CreateDishDto): Promise<Dish> {
-    const findDish = await DB.Dish.findOne({ where: { name: dto.name } });
-    if (findDish) throw new HttpException(409, `This dish ${dto.name} already exists`);
+    // const findDish = await DB.Dish.findOne({ where: { name: dto.name } });
+    // if (findDish) throw new HttpException(409, `This dish ${dto.name} already exists`);
 
     const { productid, ...product } = dto;
 

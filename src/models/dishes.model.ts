@@ -2,17 +2,19 @@ import { DataTypes, Model, Optional, Sequelize } from 'sequelize';
 import { Dish } from '@/interfaces/dishes.interface';
 
 export type DishCreationAttributes = Optional<Dish, 'id'>;
+
 export class DishModel extends Model<Dish, DishCreationAttributes> implements Dish {
   public id: number;
   public name: string;
-
   public description: string;
   public images: string[];
   public productid: number[];
+
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
   public readonly deletedAt!: Date;
 }
+
 const initModel = (sequelize: Sequelize): typeof DishModel => {
   DishModel.init(
     {
@@ -27,16 +29,15 @@ const initModel = (sequelize: Sequelize): typeof DishModel => {
       },
       description: {
         allowNull: false,
-        type: DataTypes.STRING(45),
+        type: DataTypes.STRING,
       },
       images: {
         allowNull: true,
         type: DataTypes.JSON,
       },
       productid: {
-        autoIncrement: true,
-        primaryKey: true,
-        type: DataTypes.ARRAY(DataTypes.INTEGER),
+        allowNull: false,
+        type: DataTypes.JSON,
       },
     },
     {
@@ -48,4 +49,5 @@ const initModel = (sequelize: Sequelize): typeof DishModel => {
   );
   return DishModel;
 };
+
 export default initModel;
