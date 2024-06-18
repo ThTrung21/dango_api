@@ -16,6 +16,7 @@ export class ProductController {
       next(error);
     }
   };
+
   public getTenProducts = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const findTenProductsData: Product[] = await this.product.findFirstTenProducts();
@@ -32,6 +33,19 @@ export class ProductController {
       const findOneProductData: Product = await this.product.findProductById(productId);
 
       res.status(200).json({ data: findOneProductData, message: 'findOne' });
+    } catch (error) {
+      next(error);
+    }
+  };
+  public getProductsByIds = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { ids } = req.body;
+      if (!Array.isArray(ids)) {
+        return res.status(400).json({ message: 'Invalid input, expected an array of IDs' });
+      }
+      const findProductsData: Product[] = await this.product.findProductsByIds(ids);
+
+      res.status(200).json({ data: findProductsData, message: 'findMany' });
     } catch (error) {
       next(error);
     }

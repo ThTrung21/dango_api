@@ -162,7 +162,7 @@ class Seeder {
           sold: faker.number.int({ min: 1, max: 20 }),
         };
 
-        await this.productService.createProduct(newProducts);
+        await this.productService.seedProduct(newProducts);
       }
 
       logger.info('Product seeding successfully!');
@@ -260,7 +260,7 @@ class Seeder {
         }
         const productidArray: number[] = [];
         while (productidArray.length < 3) {
-          const productId = faker.number.int({ min: 0, max: 30 });
+          const productId = faker.number.int({ min: 1, max: 30 });
           if (!productidArray.includes(productId)) {
             productidArray.push(productId);
           }

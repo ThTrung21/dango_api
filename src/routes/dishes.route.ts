@@ -8,25 +8,19 @@ import { AdminCheckMiddleware, AuthMiddleware } from '@/middlewares/auth.middlew
 export class DishRoute implements Routes {
   public path = '/dishes';
   public router = Router();
-  public product = new DishController();
+  public dish = new DishController();
 
   constructor() {
     this.initializeRoutes();
   }
 
   private initializeRoutes() {
-    this.router.get(`${this.path}`, this.product.getDishes);
+    this.router.get(`${this.path}`, this.dish.getDishes);
 
-    this.router.get(`${this.path}/search`, this.product.searchDishes);
-    this.router.get(`${this.path}/:id(\\d+)`, this.product.getDishById);
-    this.router.post(`${this.path}`, AuthMiddleware, AdminCheckMiddleware, ValidationMiddleware(CreateDishDto), this.product.createDish);
-    this.router.put(
-      `${this.path}/:id(\\d+)`,
-      AuthMiddleware,
-      AdminCheckMiddleware,
-      ValidationMiddleware(CreateDishDto, true),
-      this.product.updateDish,
-    );
-    this.router.delete(`${this.path}/:id(\\d+)`, AuthMiddleware, AdminCheckMiddleware, this.product.deleteDish);
+    this.router.get(`${this.path}/search`, this.dish.searchDishes);
+    this.router.get(`${this.path}/:id(\\d+)`, this.dish.getDishById);
+    this.router.post(`${this.path}`, AuthMiddleware, AdminCheckMiddleware, ValidationMiddleware(CreateDishDto), this.dish.createDish);
+    this.router.put(`${this.path}/:id(\\d+)`, AuthMiddleware, AdminCheckMiddleware, ValidationMiddleware(CreateDishDto, true), this.dish.updateDish);
+    this.router.delete(`${this.path}/:id(\\d+)`, AuthMiddleware, AdminCheckMiddleware, this.dish.deleteDish);
   }
 }

@@ -23,11 +23,23 @@ export class ProductService {
     return findProduct;
   }
 
+  public async findProductsByIds(productIds: number[]): Promise<Product[]> {
+    const products: Product[] = await DB.Product.findAll({
+      where: {
+        id: productIds,
+      },
+    });
+    if (products.length === 0) {
+      throw new HttpException(404, 'No products found');
+    }
+
+    return products;
+  }
   //get 10 products:
   public async findFirstTenProducts(): Promise<Product[]> {
     const products: Product[] = await DB.Product.findAll({
       limit: 10,
-      order: [['id', 'ASC']], // Assuming you want to get the first 10 products based on their ID
+      order: [['sold', 'ASC']],
     });
     return products;
   }
@@ -37,6 +49,23 @@ export class ProductService {
     const findProduct = await DB.Product.findOne({ where: { name: dto.name } });
     if (findProduct) throw new HttpException(409, `This product ${dto.name} already exists`);
 
+    const { brandName, ...product } = dto;
+
+    const findBrand = await DB.Brands.findOne({ where: { name: brandName } });
+    console.log(findBrand);
+    let productBrandId: number;
+    if (!findBrand) {
+      const createBrand = await DB.Brands.create({ name: brandName });
+      productBrandId = createBrand.id;
+    } else {
+      productBrandId = findBrand.id;
+    }
+
+    const createProductData: Product = await DB.Product.create({ ...product, brandId: productBrandId });
+    return createProductData;
+  }
+  //seeding command
+  public async seedProduct(dto: CreateProductDto): Promise<Product> {
     const { brandName, ...product } = dto;
 
     const findBrand = await DB.Brands.findOne({ where: { name: brandName } });
