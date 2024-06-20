@@ -4,5 +4,5 @@ export interface Dish {
   name: string;
   description: string;
   images: string[];
-  productid: number[];
+  productid: string[];
 }

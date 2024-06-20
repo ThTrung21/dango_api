@@ -23,6 +23,16 @@ export class DishService {
 
     return findDish;
   }
+  //seeding
+  public async seedDish(dto: CreateDishDto): Promise<Dish> {
+    // const findDish = await DB.Dish.findOne({ where: { name: dto.name } });
+    // if (findDish) throw new HttpException(409, `This dish ${dto.name} already exists`);
+
+    const { productid, ...product } = dto;
+
+    const createDishData: Dish = await DB.Dish.create({ ...product, productid: productid });
+    return createDishData;
+  }
 
   //add
   public async createDish(dto: CreateDishDto): Promise<Dish> {
@@ -37,8 +47,8 @@ export class DishService {
         throw new HttpException(404, `Product with ID ${id} does not exist`);
       }
     }
-
-    const createDishData: Dish = await DB.Dish.create({ ...product, productid: productid });
+    const aaa: string[] = productid;
+    const createDishData: Dish = await DB.Dish.create({ ...product, productid: aaa });
     return createDishData;
   }
 

@@ -8,7 +8,7 @@ export class DishModel extends Model<Dish, DishCreationAttributes> implements Di
   public name: string;
   public description: string;
   public images: string[];
-  public productid: number[];
+  public productid: string[];
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;

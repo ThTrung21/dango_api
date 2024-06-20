@@ -254,15 +254,16 @@ class Seeder {
       for (let i = 0; i < dishes; i++) {
         const imgs_src = PRODUCT_IMG;
         const imgsSet = new Set<string>();
-        const productSet = new Set<number>();
+
         while (imgsSet.size < 3) {
           imgsSet.add(imgs_src[faker.number.int({ min: 0, max: imgs_src.length - 1 })]);
         }
-        const productidArray: number[] = [];
+
+        const productidArray: string[] = [];
         while (productidArray.length < 3) {
           const productId = faker.number.int({ min: 1, max: 30 });
-          if (!productidArray.includes(productId)) {
-            productidArray.push(productId);
+          if (!productidArray.includes(productId.toString())) {
+            productidArray.push(productId.toString());
           }
         }
         const newDishes: CreateDishDto = {
@@ -271,7 +272,7 @@ class Seeder {
           productid: productidArray,
           images: [...imgsSet],
         };
-        await this.dishService.createDish(newDishes);
+        await this.dishService.seedDish(newDishes);
       }
       logger.info('Dish seeding successfully!');
     } catch (error) {
@@ -292,11 +293,11 @@ class Seeder {
   try {
     await DB.sequelize.sync({ force: true, alter: true });
     const seeder = new Seeder({
-      users: 10,
-      products: 32,
-      ordersPerUser: 5,
-      itemsPerOrder: 3,
-      dishes: 10,
+      users: 0,
+      products: 0,
+      ordersPerUser: 0,
+      itemsPerOrder: 0,
+      dishes: 12,
     });
     await seeder.seedAll();
 
