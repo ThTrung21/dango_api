@@ -14,7 +14,7 @@ import { CategoryService } from '@/services/categories.service';
 import { Role } from '@/interfaces/auth.interface';
 import { OrderStatus } from '@/interfaces/orders.interface';
 import moment from 'moment-timezone';
-import { PRODUCT_IMG } from './constant-urls';
+import { DISH_IMG, PRODUCT_IMG } from './constant-urls';
 import { Dish } from '@/interfaces/dishes.interface';
 import { CreateDishDto } from '@/dtos/dishes.dto';
 import { DishService } from '@/services/dishes.service';
@@ -290,7 +290,7 @@ class Seeder {
     try {
       const { dishes } = this.seedingAmount;
       for (let i = 0; i < dishes; i++) {
-        const imgs_src = PRODUCT_IMG;
+        const imgs_src = DISH_IMG;
         const imgsSet = new Set<string>();
 
         while (imgsSet.size < 3) {
