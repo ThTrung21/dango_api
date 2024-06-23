@@ -39,7 +39,7 @@ export class ProductService {
   public async findFirstTenProducts(): Promise<Product[]> {
     const products: Product[] = await DB.Product.findAll({
       limit: 10,
-      order: [['sold', 'ASC']],
+      order: [['sold', 'DESC']],
     });
     return products;
   }

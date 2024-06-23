@@ -27,7 +27,7 @@ export class DishService {
   public async findTenPopularDishes(): Promise<Dish[]> {
     const dishes: Dish[] = await DB.Dish.findAll({
       limit: 10,
-      order: [['score', 'ASC']],
+      order: [['score', 'DESC']],
     });
     return dishes;
   }
