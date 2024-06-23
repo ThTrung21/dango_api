@@ -87,6 +87,16 @@ export class UserController {
       next(error);
     }
   };
+  public updateLikedDish = async (req: RequestWithUser, res: Response, next: NextFunction) => {
+    try {
+      const { user } = req;
+      const a = await this.user.updateLikedDish(user.getDataValue('id'), req.body);
+
+      res.status(200).json({ data: a, message: 'liked dish updated' });
+    } catch (error) {
+      next(error);
+    }
+  };
 
   public updateProfile = async (req: RequestWithUser, res: Response, next: NextFunction) => {
     try {

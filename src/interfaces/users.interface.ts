@@ -16,7 +16,7 @@ export interface User {
   email: string;
 
   avatar?: string;
-
   role: Role;
+  likeddish: string[];
 }
 //import { Role } from './auth.interface';

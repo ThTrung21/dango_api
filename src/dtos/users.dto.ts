@@ -1,11 +1,30 @@
 //import { Role } from '@/interfaces/auth.interface';
 import { Role } from '@/interfaces/users.interface';
-import { IsString, IsEmail, IsNotEmpty, MinLength, MaxLength, IsDate, IsOptional, IsBoolean, IsDateString, IsEnum } from 'class-validator';
+import {
+  IsString,
+  IsEmail,
+  IsNotEmpty,
+  MinLength,
+  MaxLength,
+  IsDate,
+  IsOptional,
+  IsBoolean,
+  IsDateString,
+  IsEnum,
+  isArray,
+  IsArray,
+  isString,
+  ArrayNotEmpty,
+} from 'class-validator';
 
 export class CreateUserDto {
   @IsEmail()
   @IsOptional()
   public email: string;
+
+  @IsOptional()
+  @IsString({ each: true })
+  public likeddish: string[];
 
   @IsString()
   @IsNotEmpty()
@@ -70,4 +89,14 @@ export class UpdateUserDto {
   @IsString()
   @IsOptional()
   public address: string;
+
+  @IsString({ each: true })
+  public likeddish: string[];
+}
+
+export class UpdateUserLikeDto {
+  @ArrayNotEmpty()
+  @IsArray()
+  @IsString({ each: true })
+  public likeddish: string[];
 }

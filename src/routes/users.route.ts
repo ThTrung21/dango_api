@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { UserController } from '@controllers/users.controller';
-import { CreateUserDto, UpdatePasswordDto, UpdateUserDto } from '@/dtos/users.dto';
+import { CreateUserDto, UpdatePasswordDto, UpdateUserDto, UpdateUserLikeDto } from '@/dtos/users.dto';
 import { Routes } from '@interfaces/routes.interface';
 import { ValidationMiddleware } from '@middlewares/validation.middleware';
 import { AdminCheckMiddleware, AuthMiddleware } from '@/middlewares/auth.middleware';
@@ -19,6 +19,8 @@ export class UserRoute implements Routes {
     this.router.get(`${this.path}/profile`, AuthMiddleware, this.user.getProfile);
     this.router.put(`${this.path}/profile`, AuthMiddleware, ValidationMiddleware(UpdateUserDto, true), this.user.updateProfile);
     this.router.patch(`${this.path}/change-password`, AuthMiddleware, ValidationMiddleware(UpdatePasswordDto, true), this.user.updatePassword);
+    this.router.patch(`${this.path}/update-like`, AuthMiddleware, ValidationMiddleware(UpdateUserLikeDto, true), this.user.updateLikedDish);
+
     // admin
     this.router.get(`${this.path}`, AuthMiddleware, AdminCheckMiddleware, this.user.getUsers);
     this.router.get(`${this.path}/s`, AuthMiddleware, AdminCheckMiddleware, this.user.getStaff);

@@ -1,16 +1,5 @@
-//import { User } from '@interfaces/users.interface';
-
-// password: password123456789
-// export const UserModel: User[] = [
-//   { id: 1, email: 'example1@email.com', password: '$2b$10$2YC2ht8x06Yto5VAr08kben8.oxjTPrMn0yJhv8xxSVVltH3bOs4u' },
-//   { id: 2, email: 'example2@email.com', password: '$2b$10$2YC2ht8x06Yto5VAr08kben8.oxjTPrMn0yJhv8xxSVVltH3bOs4u' },
-//   { id: 3, email: 'example3@email.com', password: '$2b$10$2YC2ht8x06Yto5VAr08kben8.oxjTPrMn0yJhv8xxSVVltH3bOs4u' },
-//   { id: 4, email: 'example4@email.com', password: '$2b$10$2YC2ht8x06Yto5VAr08kben8.oxjTPrMn0yJhv8xxSVVltH3bOs4u' },
-// ];
-
 import { DataTypes, Model, Optional, Sequelize } from 'sequelize';
 import { User, Role } from '@interfaces/users.interface';
-//import { Role } from '@/interfaces/auth.interface';
 
 export type UserCreationAttributes = Optional<User, 'id'>;
 
@@ -25,6 +14,7 @@ export class UserModel extends Model<User, UserCreationAttributes> implements Us
   public phone: string;
   public orderHistory: string[];
   public email: string;
+  public likeddish: string[];
   public avatar?: string;
 
   public readonly createdAt!: Date;
@@ -71,6 +61,10 @@ const initModel = (sequelize: Sequelize): typeof UserModel => {
         type: DataTypes.STRING(500),
       },
       orderHistory: {
+        allowNull: true,
+        type: DataTypes.JSON,
+      },
+      likeddish: {
         allowNull: true,
         type: DataTypes.JSON,
       },

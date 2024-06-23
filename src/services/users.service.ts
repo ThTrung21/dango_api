@@ -1,12 +1,13 @@
 import { compare, hash } from 'bcrypt';
 import { Service } from 'typedi';
 import { DB } from '@/database';
-import { CreateUserDto, UpdatePasswordDto, UpdateUserDto } from '@dtos/users.dto';
+import { CreateUserDto, UpdatePasswordDto, UpdateUserDto, UpdateUserLikeDto } from '@dtos/users.dto';
 import { HttpException } from '@/exceptions/HttpException';
 import { User } from '@interfaces/users.interface';
 import { Role } from '@/interfaces/auth.interface';
 import { AVATARS } from '@/database/seeders/constant-urls';
 import { faker } from '@faker-js/faker';
+import { UpdateLikeDto } from '@/dtos/dishes.dto';
 
 @Service()
 export class UserService {
@@ -101,6 +102,15 @@ export class UserService {
     const hashedPassword = await hash(newPassword, 10);
     await DB.User.update({ password: hashedPassword }, { where: { id: userId } });
 
+    return findUser;
+  }
+
+  public async updateLikedDish(userId: number, userData: UpdateUserLikeDto): Promise<User> {
+    const findUser: User = await DB.User.findByPk(userId);
+    if (!findUser) throw new HttpException(409, "User doesn't exist");
+    const newlikeddish = userData.likeddish;
+
+    await DB.User.update({ likeddish: newlikeddish }, { where: { id: userId } });
     return findUser;
   }
 }

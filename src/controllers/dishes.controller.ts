@@ -3,7 +3,7 @@ import { Container } from 'typedi';
 import { CreateProductDto } from '@/dtos/products.dto';
 import { Dish } from '@/interfaces/dishes.interface';
 import { DishService } from '@/services/dishes.service';
-import { CreateDishDto } from '@/dtos/dishes.dto';
+import { CreateDishDto, UpdateLikeDto } from '@/dtos/dishes.dto';
 
 export class DishController {
   public dish = Container.get(DishService);
@@ -51,6 +51,36 @@ export class DishController {
     }
   };
 
+  public updateScore = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const dishId = Number(req.params.id);
+      const updateScore: Dish = await this.dish.updateScore(dishId);
+      res.status(200).json({ data: updateScore, message: 'updated +' });
+    } catch (error) {
+      next(error);
+    }
+  };
+  public updateScore2 = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const dishId = Number(req.params.id);
+
+      const updateScore2: Dish = await this.dish.updateScore2(dishId);
+
+      res.status(200).json({ data: updateScore2, message: 'updated -' });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public getPopularDishes = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const findTenPopularDishes: Dish[] = await this.dish.findTenPopularDishes();
+
+      res.status(200).json({ data: findTenPopularDishes, message: 'findAll' });
+    } catch (error) {
+      next(error);
+    }
+  };
   public deleteDish = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const dishId = Number(req.params.id);

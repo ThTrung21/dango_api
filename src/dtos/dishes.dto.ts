@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsNumber, IsArray, IsOptional, isArray, ArrayMinSize, IsInt, Min } from 'class-validator';
+import { IsString, IsNotEmpty, IsNumber, IsArray, IsOptional, isArray, ArrayMinSize, IsInt, Min, isString, isNumber } from 'class-validator';
 
 export class CreateDishDto {
   @IsString()
@@ -6,8 +6,13 @@ export class CreateDishDto {
   public name: string;
 
   @IsString()
+  public category: string;
+  @IsString()
   @IsNotEmpty()
   public description: string;
+
+  @IsNumber()
+  public score: number;
 
   @IsString({ each: true })
   public images: string[];
@@ -22,6 +27,9 @@ export class UpdateDishDto {
   @IsNotEmpty()
   public name: string;
 
+  @IsNumber()
+  public category: string;
+
   @IsString()
   @IsOptional()
   @IsNotEmpty()
@@ -34,4 +42,10 @@ export class UpdateDishDto {
 
   @IsString({ each: true })
   public productid: string[];
+  @IsNumber()
+  public score: number;
+}
+export class UpdateLikeDto {
+  @IsNumber()
+  public score: number;
 }

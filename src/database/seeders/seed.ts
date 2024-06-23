@@ -72,6 +72,19 @@ class Seeder {
         'Hoc Mon',
         'Binh Chanh',
       ];
+
+      function getRandomLikedDishes(numDishes: number, maxDishId: number): string[] {
+        if (numDishes > maxDishId) {
+          throw new Error(`Cannot generate ${numDishes} liked dishes with max ID ${maxDishId}`);
+        }
+
+        const likedDishes = new Set<string>();
+        while (likedDishes.size < numDishes) {
+          likedDishes.add(faker.number.int({ min: 1, max: maxDishId }).toString());
+        }
+        return Array.from(likedDishes);
+      }
+
       for (let i = 0; i < users; i++) {
         const newUser: CreateUserDto = {
           fullname: faker.person.fullName(),
@@ -82,6 +95,7 @@ class Seeder {
           // eslint-disable-next-line prettier/prettier
           address: faker.location.streetAddress() + ', ' + getRandomElement(district) + ', HCM',
           role: i == 0 ? Role.ADMIN : Role.CUSTOMER,
+          likeddish: getRandomLikedDishes(3, 11),
         };
 
         creationPromises.push(this.userService.createUser(newUser));
@@ -94,6 +108,7 @@ class Seeder {
       throw error;
     }
   }
+
   private async SeedOrders() {
     try {
       const { products, ordersPerUser, itemsPerOrder } = this.seedingAmount;
@@ -249,6 +264,29 @@ class Seeder {
     logger.info('Modify created date successfully!');
   }
   private async SeedDish() {
+    const categories = [
+      'Pizza',
+      'Pasta',
+      'Burgers',
+      'Sushi',
+      'Indian',
+      'Chinese',
+      'Mexican',
+      'Thai',
+      'Sandwiches',
+      'Salads',
+      'Korean Food',
+      'Seafood',
+      'Soups',
+      'Breakfast',
+      'Desserts',
+      'Vegetarian',
+      'Vegan',
+      'BBQ',
+      'Italian',
+      'Japanese',
+    ];
+
     try {
       const { dishes } = this.seedingAmount;
       for (let i = 0; i < dishes; i++) {
@@ -271,6 +309,8 @@ class Seeder {
           description: faker.commerce.productDescription(),
           productid: productidArray,
           images: [...imgsSet],
+          score: faker.number.int({ min: 0, max: 50 }),
+          category: getRandomElement(categories),
         };
         await this.dishService.seedDish(newDishes);
       }
@@ -293,10 +333,10 @@ class Seeder {
   try {
     await DB.sequelize.sync({ force: true, alter: true });
     const seeder = new Seeder({
-      users: 0,
-      products: 0,
-      ordersPerUser: 0,
-      itemsPerOrder: 0,
+      users: 10,
+      products: 31,
+      ordersPerUser: 6,
+      itemsPerOrder: 4,
       dishes: 12,
     });
     await seeder.seedAll();

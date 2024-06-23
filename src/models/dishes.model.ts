@@ -9,6 +9,8 @@ export class DishModel extends Model<Dish, DishCreationAttributes> implements Di
   public description: string;
   public images: string[];
   public productid: string[];
+  public score: number;
+  public category: string;
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -38,6 +40,14 @@ const initModel = (sequelize: Sequelize): typeof DishModel => {
       productid: {
         allowNull: false,
         type: DataTypes.JSON,
+      },
+      score: {
+        allowNull: false,
+        type: DataTypes.INTEGER,
+      },
+      category: {
+        allowNull: false,
+        type: DataTypes.STRING,
       },
     },
     {

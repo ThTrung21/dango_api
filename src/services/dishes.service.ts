@@ -1,6 +1,6 @@
 import { Service } from 'typedi';
 import { DB } from '@/database';
-import { CreateDishDto, UpdateDishDto } from '@/dtos/dishes.dto';
+import { CreateDishDto, UpdateDishDto, UpdateLikeDto } from '@/dtos/dishes.dto';
 import { HttpException } from '@/exceptions/HttpException';
 import { Dish } from '@/interfaces/dishes.interface';
 
@@ -23,6 +23,15 @@ export class DishService {
 
     return findDish;
   }
+  //get 10 popular dishes
+  public async findTenPopularDishes(): Promise<Dish[]> {
+    const dishes: Dish[] = await DB.Dish.findAll({
+      limit: 10,
+      order: [['score', 'ASC']],
+    });
+    return dishes;
+  }
+
   //seeding
   public async seedDish(dto: CreateDishDto): Promise<Dish> {
     // const findDish = await DB.Dish.findOne({ where: { name: dto.name } });
@@ -36,18 +45,15 @@ export class DishService {
 
   //add
   public async createDish(dto: CreateDishDto): Promise<Dish> {
-    // const findDish = await DB.Dish.findOne({ where: { name: dto.name } });
-    // if (findDish) throw new HttpException(409, `This dish ${dto.name} already exists`);
-
     const { productid, ...product } = dto;
-
-    for (const id of productid) {
+    const aaa: string[] = productid;
+    for (const id of aaa) {
       const findproduct = await DB.Product.findOne({ where: { id: id } });
       if (!findproduct) {
         throw new HttpException(404, `Product with ID ${id} does not exist`);
       }
     }
-    const aaa: string[] = productid;
+
     const createDishData: Dish = await DB.Dish.create({ ...product, productid: aaa });
     return createDishData;
   }
@@ -56,7 +62,7 @@ export class DishService {
   public async updateDish(dishId: number, dishData: UpdateDishDto): Promise<Dish> {
     const findDish = await DB.Dish.findByPk(dishId);
     if (!findDish) throw new HttpException(404, `Dish with ID ${dishId} not found`);
-
+    console.log(dishData.score);
     if (dishData.productid) {
       for (const id of dishData.productid) {
         const findProduct = await DB.Product.findOne({ where: { id: id } });
@@ -67,6 +73,33 @@ export class DishService {
     }
 
     await DB.Dish.update(dishData, { where: { id: dishId } });
+
+    const updatedDish = await DB.Dish.findByPk(dishId);
+    return updatedDish;
+  }
+  //update score
+  public async updateScore(dishId: number): Promise<Dish> {
+    const findDish = await DB.Dish.findByPk(dishId);
+    if (!findDish) throw new HttpException(404, `Dish with ID ${dishId} not found`);
+
+    // Increment the score by 1
+    const newScore = findDish.score + 1;
+
+    // Update only the score attribute
+    await DB.Dish.update({ score: newScore }, { where: { id: dishId } });
+
+    const updatedDish = await DB.Dish.findByPk(dishId);
+    return updatedDish;
+  }
+  public async updateScore2(dishId: number): Promise<Dish> {
+    const findDish = await DB.Dish.findByPk(dishId);
+    if (!findDish) throw new HttpException(404, `Dish with ID ${dishId} not found`);
+
+    // Increment the score by 1
+    const newScore = findDish.score - 1;
+
+    // Update only the score attribute
+    await DB.Dish.update({ score: newScore }, { where: { id: dishId } });
 
     const updatedDish = await DB.Dish.findByPk(dishId);
     return updatedDish;
